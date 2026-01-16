@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email AI Triage</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Email AI Triage</h1>
+            <p>Classifique e responda seus emails automaticamente</p>
+        </header>
+
+        <main>
+            <div class="input-section card">
+                <h2>Novo Email</h2>
+                <form id="triageForm">
+                    <div class="form-group">
+                        <label for="emailText">Cole o texto do email aqui:</label>
+                        <textarea id="emailText" placeholder="Ex: Olá, gostaria de saber o status do meu pedido..."></textarea>
+                    </div>
+                    
+                    <div class="divider">ou</div>
+
+                    <div class="form-group">
+                        <label>Carregue um arquivo (.txt ou .pdf):</label>
+                        <div id="dropZone" class="drop-zone">
+                            <div class="drop-content">
+                                <span class="icon">📂</span>
+                                <p>Arraste e solte seu arquivo aqui</p>
+                                <span class="text-sm">ou clique para selecionar</span>
+                            </div>
+                            <input type="file" id="emailFile" accept=".txt,.pdf" hidden>
+                            <div id="fileInfo" class="file-info hidden"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="processBtn" class="btn-primary">
+                        Processar Email
+                    </button>
+                    <div id="loading" class="hidden">Processando...</div>
+                </form>
+                <div id="errorMsg" class="error-box hidden"></div>
+            </div>
+
+            <div id="resultSection" class="result-section card hidden">
+                <div class="result-header">
+                    <h2>Resultado</h2>
+                    <span id="badgeCategory" class="badge">--</span>
+                </div>
+                
+                <div class="confidence-container">
+                    <span>Confiança IA:</span>
+                    <strong id="confidenceVal">0%</strong>
+                    <div class="progress-bar">
+                        <div id="confidenceBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                        <label style="margin-bottom:0;">Sugestão de Resposta:</label>
+                        <span id="replySourceBadge" class="badge" style="background:#e0e7ff; color:#3730a3; font-weight:normal; font-size:0.8rem;">Fonte: --</span>
+                    </div>
+                    <div class="response-box">
+                        <textarea id="suggestedReply" readonly></textarea>
+                        <button id="copyBtn" class="btn-secondary" title="Copiar">Copiar Resposta</button>
+                    </div>
+                </div>
+
+                <div class="feedback-section">
+                    <p>A classificação está correta?</p>
+                    <div class="feedback-buttons">
+                        <button data-correct="true" class="btn-outline">👍 Sim</button>
+                        <button data-correct="false" class="btn-outline">👎 Não, era a outra</button>
+                    </div>
+                    <div id="feedbackMsg" class="hidden text-small">Obrigado pelo feedback!</div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+</html>
