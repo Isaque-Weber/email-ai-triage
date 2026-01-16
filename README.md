@@ -142,5 +142,15 @@ requirements.txt # Dependências do projeto
 
 ---
 
-Desenvolvido por **Isaque Weber** como parte do Desafio Técnico.
+Desenvolvido por **Isaque Weber**.
 *Dúvidas? Entre em contato.*
+
+## 📧 Contato
+
+- **Email:** isaque.weber5@gmail.com
+- **LinkedIn:** [linkedin.com/in/isaque-weber](https://linkedin.com/in/isaque-weber)
+
+<a href="https://wa.me/5521967398707">
+    <img alt="Contato" title="Fale comigo no WhatsApp"
+         src="https://custom-icon-badges.demolab.com/badge/-WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/>
+</a>
