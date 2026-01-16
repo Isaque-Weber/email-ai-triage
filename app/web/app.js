@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Skeleton Loading - exibe por no mínimo 1.2 segundos
+    const skeletonLoader = document.getElementById('skeletonLoader');
+    const mainContent = document.getElementById('mainContent');
+    
+    // Pequeno delay para garantir que o CSS carregou e evitar FOUC
+    setTimeout(() => {
+        skeletonLoader.classList.add('hidden');
+        mainContent.style.opacity = '1';
+        mainContent.style.transition = 'opacity 0.5s ease';
+    }, 1200);
+
     // References to DOM elements
     const form = document.getElementById('triageForm');
     const resultSection = document.getElementById('resultSection');
@@ -21,11 +32,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalTextCache = "";
 
     // Drag and Drop Logic
-    dropZone.addEventListener('click', () => emailFile.click());
+    dropZone.addEventListener('click', () => {
+        if (!dropZone.classList.contains('disabled')) {
+            emailFile.click();
+        }
+    });
 
     dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
-        dropZone.classList.add('dragover');
+        if (!dropZone.classList.contains('disabled')) {
+            dropZone.classList.add('dragover');
+        }
     });
 
     dropZone.addEventListener('dragleave', () => {
@@ -36,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         dropZone.classList.remove('dragover');
         
-        if (e.dataTransfer.files.length) {
+        if (!dropZone.classList.contains('disabled') && e.dataTransfer.files.length) {
             emailFile.files = e.dataTransfer.files;
             updateFileInfo(e.dataTransfer.files[0].name);
         }
@@ -49,6 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function updateFileInfo(name) {
+        // Desabilita dropZone
+        dropZone.classList.add('disabled');
+
         fileInfo.innerHTML = `
             <span>Arquivo: <strong>${name}</strong></span>
             <button type="button" id="removeFileBtn" class="btn-text" title="Remover arquivo">❌</button>
@@ -60,12 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const btn = document.getElementById('removeFileBtn');
         btn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Previne que o click suba para o dropZone
+            e.stopPropagation();
             removeFile();
         });
     }
 
     function removeFile() {
+        // Reabilita dropZone
+        dropZone.classList.remove('disabled');
+
         emailFile.value = ''; // Clear input
         fileInfo.classList.add('hidden');
         fileInfo.innerHTML = '';
@@ -123,16 +146,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     copyBtn.addEventListener('click', (e) => {
-        e.preventDefault(); // Prevent duplicate submit
+        e.preventDefault();
         if (suggestedReply.value) {
             navigator.clipboard.writeText(suggestedReply.value)
                 .then(() => {
-                    const originalText = copyBtn.innerText;
-                    copyBtn.innerText = "Copiado!";
-                    setTimeout(() => copyBtn.innerText = originalText, 2000);
+                    // Feedback visual no ícone
+                    const originalIcon = copyBtn.innerHTML;
+                    copyBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    `;
+                    copyBtn.style.transform = "scale(1.2)";
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalIcon;
+                        copyBtn.style.transform = "scale(1)";
+                    }, 2000);
                 });
         }
     });
+
+    // Auto-resize Textarea Logic
+    function autoResizeTextarea() {
+        suggestedReply.style.height = 'auto'; // Reset height to recalculate
+        const newHeight = Math.min(suggestedReply.scrollHeight, 400); // Max height limit matching CSS
+        
+        if (suggestedReply.scrollHeight > 400) {
+            suggestedReply.style.overflowY = 'auto';
+        } else {
+            suggestedReply.style.overflowY = 'hidden';
+        }
+        
+        suggestedReply.style.height = newHeight + 'px';
+    }
+    
+    // Listener para redimensionar se o usuário digitar (caso seja editável no futuro)
+    suggestedReply.addEventListener('input', autoResizeTextarea);
 
     // Feedback Buttons
     const feedbackBtns = document.querySelectorAll('.feedback-buttons button');
@@ -179,6 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Reply
         suggestedReply.value = data.suggested_reply;
+
+        // Trigger auto-resize
+        setTimeout(autoResizeTextarea, 0);
 
         // Source
         const sourceBadge = document.getElementById('replySourceBadge');

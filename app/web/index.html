@@ -3,17 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email AI Triage</title>
+    <title>InboxAI - Triagem Inteligente de Emails</title>
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <!-- Skeleton Loading Screen -->
+    <div id="skeletonLoader" class="skeleton-loader">
+        <div class="skeleton-container">
+            <div class="skeleton-header">
+                <div class="skeleton-icon"></div>
+                <div class="skeleton-title"></div>
+            </div>
+            <div class="skeleton-subtitle"></div>
+            <div class="skeleton-card">
+                <div class="skeleton-line wide"></div>
+                <div class="skeleton-textarea"></div>
+                <div class="skeleton-line medium"></div>
+                <div class="skeleton-dropzone"></div>
+                <div class="skeleton-button"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="mainContent" style="opacity: 0;">
         <header>
-            <h1>Email AI Triage</h1>
-            <p>Classifique e responda seus emails automaticamente</p>
+            <div class="header-title">
+                <div class="header-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                </div>
+                <h1>InboxAI</h1>
+            </div>
+            <p>Triagem inteligente e respostas automáticas para seus emails</p>
         </header>
 
         <main>
@@ -36,8 +61,8 @@
                                 <span class="text-sm">ou clique para selecionar</span>
                             </div>
                             <input type="file" id="emailFile" accept=".txt,.pdf" hidden>
-                            <div id="fileInfo" class="file-info hidden"></div>
                         </div>
+                        <div id="fileInfo" class="file-info hidden"></div>
                     </div>
 
                     <button type="submit" id="processBtn" class="btn-primary">
@@ -63,13 +88,18 @@
                 </div>
 
                 <div class="form-group">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                        <label style="margin-bottom:0;">Sugestão de Resposta:</label>
-                        <span id="replySourceBadge" class="badge" style="background:#e0e7ff; color:#3730a3; font-weight:normal; font-size:0.8rem;">Fonte: --</span>
+                    <div class="response-header">
+                        <label>Sugestão de Resposta:</label>
+                        <span id="replySourceBadge" class="badge response-source-badge">Fonte: --</span>
                     </div>
                     <div class="response-box">
                         <textarea id="suggestedReply" readonly></textarea>
-                        <button id="copyBtn" class="btn-secondary" title="Copiar">Copiar Resposta</button>
+                        <button id="copyBtn" class="btn-icon" title="Copiar Resposta">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
