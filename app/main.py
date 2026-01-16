@@ -99,7 +99,20 @@ async def process_email(
         logger.error(f"Erro no processamento: {e}")
         raise HTTPException(status_code=500, detail="Erro interno no servidor.")
 
+from fastapi import BackgroundTasks
+from app.services.storage import count_feedback
+from app.services.train import retrain
+
 @app.post("/api/feedback")
-async def receive_feedback(feedback: FeedbackRequest):
+async def receive_feedback(feedback: FeedbackRequest, background_tasks: BackgroundTasks):
     save_feedback(feedback.text, feedback.predicted, feedback.correct)
+    
+    # Checa contagem para retreino
+    count = count_feedback()
+    message = "Feedback salvo."
+    
+    if count > 0 and count % 10 == 0:
+        background_tasks.add_task(retrain)
+        logger.info(f"Gatilho de retreino acionado no feedback #{count}")
+        
     return {"status": "success", "message": "Feedback salvo."}
