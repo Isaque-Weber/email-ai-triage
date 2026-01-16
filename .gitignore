@@ -1,0 +1,30 @@
+# Bytes compilados do Python
+__pycache__/
+*.pyc
+
+# Variaveis de ambiente e segredos
+.env
+
+# Ambientes virtuais
+venv/
+env/
+.venv/
+
+# Banco de dados SQLite
+*.db
+triage.db
+
+# Modelos gerados (Auto-training recria se necessario)
+models/*.joblib
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Mac OS
+.DS_Store
+
+SYSTEM_ARCHITECTURE.md
