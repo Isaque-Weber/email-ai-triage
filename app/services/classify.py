@@ -52,6 +52,11 @@ class EmailClassifier:
         logger.info("Iniciando treinamento de novo modelo...")
         self._train_new_model()
 
+    def load_model(self):
+        """Força o recarregamento do modelo do disco."""
+        logger.info("Forçando recarregamento do modelo...")
+        self._initialize_model()
+
     def _train_new_model(self):
         # Caminho absoluto para garantir que o arquivo seja encontrado independente de onde o script roda
         base_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

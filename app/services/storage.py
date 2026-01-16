@@ -57,3 +57,15 @@ def save_feedback(text: str, predicted: str, correct: str):
         conn.close()
     except Exception as e:
         logger.error(f"Erro ao salvar feedback: {e}")
+
+def count_feedback() -> int:
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM feedback")
+        count = cursor.fetchone()[0]
+        conn.close()
+        return count
+    except Exception as e:
+        logger.error(f"Erro ao contar feedback: {e}")
+        return 0
