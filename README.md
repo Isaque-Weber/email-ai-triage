@@ -1,93 +1,146 @@
-# 📧 Email AI Triage MVP
+# 📧 InboxAI - Desafio Técnico
 
-MVP de triagem automática de emails utilizando Inteligência Artificial e Processamento de Linguagem Natural (NLP). O sistema classifica emails como **Produtivos** ou **Improdutivos** e sugere respostas automáticas.
+> **Acesse a Demonstração Online:** [https://desafio.isaqueweber.com.br](https://desafio.isaqueweber.com.br)
 
-## 🚀 Funcionalidades
+Sistema inteligente para triagem automática de emails e geração de respostas, desenvolvido com foco em simplicidade, performance e experiência do usuário. O projeto utiliza Machine Learning (NLP) para classificar mensagens e Inteligência Artificial Generativa (Google Gemini) para sugerir respostas contextuais.
 
-- **Classificação Automática**: Identifica se um email é útil (Produtivo) ou spam/desnecessário (Improdutivo).
-- **Extração de Texto**: Suporta texto colado e upload de arquivos (`.txt`, `.pdf`).
-- **Sugestão de Resposta**: Gera rascunhos de resposta baseados na categoria do email.
-- **Auto-Treinamento**: O sistema aprende automaticamente com novos dados no arquivo `data/train.csv` ao iniciar.
-- **Feedback Loop**: Interface para o usuário corrigir a classificação, salvando dados para futuros treinamentos.
-- **API REST**: Backend em FastAPI pronto para integração.
+---
 
-## 🛠️ Tecnologias
+## 📋 Sobre o Projeto
 
-- **Backend**: Python 3.8+, FastAPI, Uvicorn.
-- **IA/NLP**: scikit-learn (TF-IDF + Regressão Logística), spaCy, pypdf.
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla).
-- **Banco de Dados**: SQLite (para histórico e feedback).
+O **InboxAI** resolve o problema de caixas de entrada superlotadas em ambientes corporativos. Ele atua como uma primeira camada de filtro inteligente:
+1. **Analisa** o conteúdo do email (texto ou anexo).
+2. **Classifica** a mensagem como "Produtiva" (importante) ou "Improdutiva" (ruído/spam).
+3. **Sugere** uma resposta pronta para envio, economizando tempo do operador.
 
-## 📦 Como Rodar
+A aplicação foi desenhada para ser intuitiva (Zero Learning Curve) e fácil de implantar.
 
-### 1. Pré-requisitos
+---
 
-Certifique-se de ter o Python instalado.
+## ✨ Funcionalidades Principais
 
+*   **Classificação via ML**: Utiliza um pipeline de processamento de linguagem natural (TF-IDF + Regressão Logística) para categorizar emails com alta precisão e nível de confiança.
+*   **Respostas Inteligentes (Híbrido)**:
+    *   **IA Generativa**: Integração com **Google Gemini 3.0 Flash Preview** para criar respostas personalizadas e humanas.
+    *   **Fallback Seguro**: Sistema de templates automáticos caso a API de IA esteja indisponível.
+*   **Extração de Arquivos**: Suporte nativo para leitura de arquivos `.txt` e `.pdf` via Drag & Drop.
+*   **Feedback Loop**: O sistema aprende com o usuário. Correções manuais são salvas para re-treinar e melhorar o modelo automaticamente.
+*   **Interface Premium**: Design responsivo com Dark Mode, Glassmorphism e feedbacks visuais em tempo real.
+
+---
+
+## 🏗️ Arquitetura e Tecnologias
+
+A aplicação segue uma arquitetura modular, facilitando manutenção e escalabilidade.
+
+### Stack Tecnológico
+*   **Frontend**: HTML5, CSS3 Moderno, JavaScript Vanilla (Sem frameworks pesados para máxima performance).
+*   **Backend**: Python 3.10+, FastAPI (Alta performance e validação automática).
+*   **Machine Learning**: `scikit-learn` para classificação supervisionada.
+*   **AI Generativa**: Google GenAI SDK (Gemini).
+*   **Banco de Dados**: SQLite (Leve e embutido para persistência de logs e feedback).
+*   **Infraestrutura**: Docker Ready.
+
+### Fluxo de Dados
+1.  **Input**: Usuário envia texto ou arquivo via Frontend.
+2.  **Parser**: Backend extrai e limpa o texto (`pypdf` + regex).
+3.  **Core ML**: O modelo vetoriza o texto e prevê a categoria + % de confiança.
+4.  **Reply Engine**:
+    *   Consulta API do Gemini com prompt contextual.
+    *   Se falhar, busca template local.
+5.  **Output**: Frontend exibe classificação e rascunho de resposta.
+6.  **Feedback**: Usuário avalia, e dado retorna ao DB para ciclo de melhoria (`Active Learning`).
+
+---
+
+## 🚀 Guia de Instalação e Execução
+
+O projeto foi projetado para rodar em qualquer ambiente com configuração mínima.
+
+### ⚡ Opção 1: Quick Start (Scripts Automatizados)
+Use esta opção para testar localmente sem configurar nada manualmente.
+
+*   **Windows**: Dê um duplo clique no arquivo `run_app.bat`.
+*   **Linux/Mac**: Execute `./run_app.sh` no terminal.
+
+O script criará o ambiente virtual, instalará as dependências e abrirá o servidor.
+
+### 🛠️ Opção 2: Instalação Manual
+Se preferir ter controle total sobre o ambiente:
+
+**1. Clone o repositório**
 ```bash
-# Instalar dependências
+git clone https://github.com/Isaque-Weber/email-ai-triage.git
+cd email-ai-triage
+```
+
+**2. Configure o ambiente Python**
+```bash
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# Linux/Mac
+source .venv/bin/activate
+```
+
+**3. Instale as dependências**
+```bash
 pip install -r requirements.txt
 ```
 
-#### Como obter a chave de API do Google Gemini (Opcional)
-Para habilitar as sugestões de resposta inteligentes:
-1. Acesse o [Google AI Studio](https://aistudio.google.com/).
-2. Faça login com sua conta Google.
-3. Clique em **"Get API key"** no canto inferior esquerdo.
-4. Crie uma nova chave clicando em **"Create API key"** e siga as instruções, criando um novo projeto.
-5. Copie o valor da chave gerada.
-
-#### Configuração da Chave
-Você pode configurar a chave de duas formas:
-
-**Opção 1: Arquivo .env (Recomendado)**
-Crie um arquivo chamado `.env` na raiz do projeto e adicione a seguinte linha:
+**4. Configure as Variáveis de Ambiente (Opcional)**
+Para ativar a IA Generativa (Gemini), crie um arquivo `.env` na raiz:
 ```env
 GEMINI_API_KEY=sua_chave_aqui
 ```
+*Sem a chave, o sistema funcionará perfeitamente usando o modo de templates estáticos.*
 
-**Opção 2: Variável de Ambiente**
-```bash
-# Linux/Mac
-export GEMINI_API_KEY="sua_chave_aqui"
-# Windows (PowerShell)
-$env:GEMINI_API_KEY="sua_chave_aqui"
-```
-
-### 2. Executar a Aplicação
-
+**5. Execute a aplicação**
 ```bash
 uvicorn app.main:app --reload
 ```
+Acesse em: `http://localhost:8000`
 
-Acesse no navegador: [http://localhost:8000](http://localhost:8000)
+### 🐳 Opção 3: Docker
+Para rodar em container isolado:
+
+```bash
+# Construir a imagem
+docker build -t email-triage .
+
+# Rodar o container (Porta 80 mapeada para 8000 local)
+docker run -p 8000:80 email-triage
+```
+
+---
 
 ## 📚 Documentação da API
 
-A documentação interativa (Swagger UI) está disponível em: [http://localhost:8000/docs](http://localhost:8000/docs)
+A API é documentada automaticamente (OpenAPI/Swagger). Após iniciar a aplicação, acesse:
+*   **Swagger UI**: `http://localhost:8000/docs`
+*   **ReDoc**: `http://localhost:8000/redoc`
 
 ### Endpoints Principais
+*   `POST /api/process`: Ponto central de inteligência. Recebe texto/arquivo, retorna JSON com classificação e resposta.
+*   `POST /api/feedback`: Recebe validação humana para retroalimentar o sistema.
 
-- **`POST /api/process`**: Processa um email.
-    - **Input**: `text` (string) OU `file` (upload).
-    - **Output**: JSON com categoria, confiança (%) e sugestão de resposta.
-- **`POST /api/feedback`**: Recebe correção do usuário.
-    - **Input**: JSON com texto original, predição e correção.
+---
 
-## 📂 Estrutura do Projeto
+## 🧪 Estrutura de Pastas
 
 ```
 /app
-  /main.py       # Ponto de entrada da API
-  /services      # Lógica de negócio (Classificação, Parser, Storage)
-  /web           # Frontend (HTML/CSS/JS)
+  /main.py       # Entry point e rotas da API
+  /services      # Lógica de negócio (Classificação, Texto, Respostas)
+  /web           # Frontend estático (SPA)
 /data
-  /train.csv     # Dataset para treinamento do modelo
-/models          # Modelos serializados (.joblib)
-/scripts         # Scripts utilitários (verificação, testes)
+  /train.csv     # Dataset base para treinamento inicial
+/models          # Modelos ML serializados (.joblib)
+Dockerfile       # Configuração de container
+requirements.txt # Dependências do projeto
 ```
 
-## 📝 Personalização
+---
 
-- **Treinamento**: Adicione novos exemplos em `data/train.csv` e reinicie a aplicação para re-treinar o modelo.
-- **Respostas**: Edite `app/services/reply.py` para alterar os templates de resposta.
+Desenvolvido por **Isaque Weber** como parte do Desafio Técnico.
+*Dúvidas? Entre em contato.*
