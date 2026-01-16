@@ -1,0 +1,33 @@
+Prezada Equipe de Desenvolvimento e Projetos,
+
+Espero que este email os encontre bem.
+
+Meu nome é Roberto Almeira, sou Gerente de TI na TechSolutions Corp. Estamos atualmente em processo de modernização de nossa infraestrutura interna e identificamos a necessidade de desenvolver um novo módulo para nosso sistema de ERP, focado especificamente na gestão de fornecedores e automação de pagamentos.
+
+Acompanhamos o trabalho de vocês recentementes e gostaríamos de solicitar um orçamento detalhado e uma proposta técnica para o desenvolvimento desta solução.
+
+Abaixo, listo os requisitos funcionais e não funcionais que levantamos preliminarmente:
+
+1. **Gestão de Fornecedores**: Cadastro completo, validação automática de CNPJ e verificação de antecedentes.
+2. **Automação de Pagamentos**: Integração com APIs bancárias para agendamento de TED/DOC e PIX. O sistema deve gerar arquivos CNAB 240.
+3. **Dashboard Administrativo**: Relatórios em tempo real sobre status de pagamentos, fornecedores ativos e pendências.
+4. **Segurança**: Autenticação via SSO (Single Sign-On) e criptografia de dados sensíveis conforme a LGPD.
+
+Gostaríamos que a proposta incluísse:
+- Estimativa de custos (Capex e Opex).
+- Cronograma de implementação (Gráfico de Gantt, se possível).
+- Tecnologias sugeridas para o Backend e Frontend (temos preferência por Python e React).
+- Suporte e manutenção pós-entrega (SLA).
+
+Temos disponibilidade para uma reunião técnica na próxima terça-feira às 14h ou 16h para esclarecer dúvidas e apresentar o escopo com mais detalhes. Poderiam confirmar a disponibilidade de um arquiteto de soluções da equipe de vocês?
+
+Segue em anexo (neste caso, imagine que há um anexo) o documento de RFP (Request for Proposal) com todos os detalhes técnicos.
+
+Aguardo um retorno breve para darmos seguimento.
+
+Atenciosamente,
+
+Roberto Almeira
+Gerente de TI | TechSolutions Corp
+Tel: (11) 99999-8888
+Email: roberto.almeira@techsolutions.fake
