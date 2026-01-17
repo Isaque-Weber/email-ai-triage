@@ -1,44 +1,49 @@
 #!/bin/bash
 
-# ANSI colors
+# Cores
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
 echo -e "${BLUE}========================================================${NC}"
-echo -e "${BLUE}     Email AI Triage - Inicializando Aplicação${NC}"
+echo -e "${BLUE}     Email AI Triage - Inicializando${NC}"
 echo -e "${BLUE}========================================================${NC}"
 echo ""
 
-# Check Python
+# 1. Python
 if ! command -v python3 &> /dev/null; then
-    echo -e "${RED}[ERRO] Python3 não encontrado! Por favor instale o Python 3.8+.${NC}"
+    echo -e "${RED}[ERRO] Python3 não encontrado!${NC}"
     exit 1
 fi
 
-# Create venv if not exists
+# 2. venv
 if [ ! -d ".venv" ]; then
-    echo -e "${BLUE}[INFO] Criando ambiente virtual (.venv)...${NC}"
+    echo -e "${BLUE}[INFO] Criando venv...${NC}"
     python3 -m venv .venv
 fi
 
-# Activate venv
 source .venv/bin/activate
 
-# Install requirements
-echo -e "${BLUE}[INFO] Verificando dependências...${NC}"
+# 3. Deps
+echo -e "${BLUE}[INFO] Dependências...${NC}"
 pip install -r requirements.txt > /dev/null
 
-if [ $? -ne 0 ]; then
-    echo -e "${RED}[ERRO] Falha ao instalar dependências via requirements.txt.${NC}"
-    exit 1
+# 4. .env check
+if [ ! -f ".env" ]; then
+    if [ -f ".env.example" ]; then
+        echo -e "${YELLOW}[AVISO] .env criado a partir do exemplo.${NC}"
+        cp .env.example .env
+        echo "Edite o arquivo .env para adicionar sua GEMINI_API_KEY se desejar."
+        echo "Pressione ENTER para continuar..."
+        read
+    fi
 fi
 
-# Run
-echo ""
-echo -e "${GREEN}[SUCESSO] Dependências ok. Iniciando servidor...${NC}"
-echo "A aplicação estará disponível em: http://localhost:8000"
+# 5. Run
+clear
+echo -e "${GREEN}SERVIDOR ONLINE: http://localhost:8000${NC}"
 echo ""
 
 python3 -m uvicorn app.main:app --reload
