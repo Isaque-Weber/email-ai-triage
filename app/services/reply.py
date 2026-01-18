@@ -47,22 +47,23 @@ def generate_reply(category: str, text: str = "") -> tuple[str, str]:
     else:
         logger.warning("GEMINI_API_KEY não encontrada.")
 
-    fallback_source = "Template (Regras)"
+    fallback_source = "Erro de Sistema"
 
     if category == "Improdutivo":
         return (
-            "Olá,\n\n"
-            "Obrigado pela mensagem. Ficamos à disposição caso precise de algo.\n\n"
-            "Atenciosamente.",
+            "Erro ao gerar resposta:\n\n"
+            "Cadastre uma chave de API do Gemini válida, para que possamos ajudar.\n\n"
+            "Atenciosamente.\n",
+            "Equipe InboxAI",
             fallback_source
         )
 
     if category == "Produtivo":
         return (
-            "Olá,\n\n"
-            "Recebemos sua mensagem. Para dar andamento, por favor informe o número do protocolo "
-            "ou envie os documentos necessários.\n\n"
-            "Atenciosamente.",
+            "Erro ao gerar resposta:\n\n"
+            "Cadastre uma chave de API do Gemini válida, para que possamos ajudar.\n\n"
+            "Atenciosamente.\n",
+            "Equipe InboxAI",
             fallback_source
         )
 
